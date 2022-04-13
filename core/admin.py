@@ -5,7 +5,7 @@ from core.models import *
 # Register your models here.
 
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ['id','email','first_name','last_name','is_active','date_joined', 'is_staff']
+    list_display = ['id','email','phone','first_name','last_name','is_active','date_joined', 'is_staff']
 admin.site.register(CustomUser, CustomUserAdmin)
 
 class BrandAdmin(admin.ModelAdmin):
@@ -71,7 +71,7 @@ class OrderItemAdmin(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     model = Order
     inlines = [OrderItemAdmin,]
-    list_display = ['id','list_products','created_at','status']
+    list_display = ['id','user','list_products','created_at','status']
     
     def list_products(self, obj):
         print(obj.product)
