@@ -1,4 +1,44 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %} {% block css %}
+<!-- custom css -->
+<style>
+    #message {
+        display: none;
+        background: #f1f1f1;
+        color: #000;
+        position: relative;
+        padding: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    #message p {
+        padding: 10px 35px;
+        font-size: 18px;
+    }
+    /* Add a green text color and a checkmark when the requirements are right */
+    
+    .valid {
+        color: green;
+    }
+    
+    .valid:before {
+        position: relative;
+        left: -35px;
+        content: "✔";
+    }
+    /* Add a red text color and an "x" when the requirements are wrong */
+    
+    .invalid {
+        color: red;
+    }
+    
+    .invalid:before {
+        position: relative;
+        left: -35px;
+        content: "✖";
+    }
+</style>
+{% endblock css %}
 
 <!-- Breadcrumb Section End -->
 
@@ -7,29 +47,42 @@
     <div class="container">
         <div class="checkout__form">
             <h4>Login</h4>
-            <form action="#" method="POST">
+            <form action="{% url 'login' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="next_url" value="{{ request.GET.next_url }}">
                 <div class="row">
                     <div class="col-lg-12 col-md-8">
 
                         <div class="checkout__input">
-                            <p>Email<span>*</span></p>
-                            <input type="email" placeholder="Nhập Email" name="email" required>
+                            <p>Username<span>*</span></p>
+                            <input type="text" placeholder="Nhập Username" name="username" required value="{% if old_user %} {{ old_user }} {% endif %}">
                         </div>
 
                         <div class="checkout__input">
                             <p>Password<span>*</span></p>
-                            <input type="password" placeholder="Nhập password" name="password" required>
+                            <input type="password" placeholder="Nhập password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
                         </div>
 
                         <div class="checkout__input__checkbox">
                             <label for="acc">
                                     Show password
-                                    <input type="checkbox" id="acc">
+                                    <input type="checkbox" id="acc" onclick="showPassword()">
                                     <span class="checkmark"></span>
                                 </label>
                         </div>
+                        {% if message %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                        {% endif %}
+                        <div id="message">
+                            <h4>Password must contain the following:</h4>
+                            <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                            <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                            <p id="number" class="invalid">A <b>number</b></p>
+                            <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                        </div>
+
 
                         <button type="submit" class="site-btn">LOGIN</button>
                     </div>
@@ -41,4 +94,70 @@
 </section>
 <!-- Checkout Section End -->
 
-{% endblock content %}
+
+{% endblock content %} {% block js %}
+<!-- custom js -->
+<script>
+    function showPassword() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
+    var myPassword = document.getElementById("password");
+    var letter = document.getElementById("letter");
+    var capital = document.getElementById("capital");
+    var number = document.getElementById("number");
+    var length = document.getElementById("length");
+
+    // When the user clicks on the password field, show the message box
+    myPassword.onfocus = function() {
+        document.getElementById('message').style.display = "block";
+    }
+
+    // When the user clicks outside of the password field, hide the message box
+    myPassword.onblur = function() {
+        document.getElementById('message').style.display = "none";
+    }
+    myPassword.onkeyup = function() {
+        // Validate lowercase letters
+        var lowerCaseLetters = /[a-z]/g;
+        if (myPassword.value.match(lowerCaseLetters)) {
+            letter.classList.remove('invalid');
+            letter.classList.add('valid');
+        } else {
+            letter.classList.remove('valid');
+            letter.classList.add('invalid');
+        }
+        // Validate capital letters
+        var upperCaseLetters = /[A-Z]/g;
+        if (myPassword.value.match(upperCaseLetters)) {
+            capital.classList.remove('invalid');
+            capital.classList.add('valid');
+        } else {
+            capital.classList.remove('valid');
+            capital.classList.add('invalid');
+        }
+        // Validate number
+        var numbers = /[0-9]/g;
+        if (myPassword.value.match(numbers)) {
+            number.classList.remove('invalid');
+            number.classList.add('valid');
+        } else {
+            number.classList.remove('valid');
+            number.classList.add('valid');
+        }
+        // Validate length
+        if (myPassword.value.length >= 8) {
+            length.classList.remove('invalid');
+            length.classList.add('valid');
+        } else {
+            length.classList.remove('valid');
+            length.classList.add('invalid')
+        }
+    }
+</script>
+{% endblock js %}

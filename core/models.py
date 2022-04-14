@@ -115,7 +115,8 @@ class DiscountCode(models.Model):
 
 class Insurance(models.Model):
     time_insurance = models.CharField(max_length=10)
-
+    product = models.ManyToManyField(to="Product")
+    
     class Meta:
         verbose_name_plural = '10. Bảo hành'
 
@@ -132,7 +133,7 @@ class Product(models.Model):
     size = models.ManyToManyField(Size)
     color = models.ManyToManyField(Color)
     amount = models.IntegerField(default=0)
-    insurance = models.DateTimeField()
+    time_insurance = models.DateTimeField()
     image_link = models.FileField(upload_to='image-product', null=True)
     image_detail = models.FileField(upload_to='image-detail', null=True)
     views = models.IntegerField(default=0)

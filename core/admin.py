@@ -53,7 +53,9 @@ class DiscountCodeAdmin(admin.ModelAdmin):
 admin.site.register(DiscountCode, DiscountCodeAdmin)
 
 class InsuranceAdmin(admin.ModelAdmin):
-    list_display = ['id','time_insurance']
+    list_display = ['id','time_insurance', 'list_products']
+    def list_products(self, obj):
+        return ", " .join([p.name for p in obj.product.all()])
 admin.site.register(Insurance, InsuranceAdmin)
 
 class ProductAdmin(admin.ModelAdmin):
