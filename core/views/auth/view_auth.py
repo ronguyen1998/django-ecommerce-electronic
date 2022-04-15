@@ -50,13 +50,37 @@ class SigupView(View):
         }
         return render(request, 'auth/sigup.html',context)
     def post(self, request):
-        form = NewUserForm(request.POST)
-        print(form)
-        if form.is_valid():
-            user = form.save()
-            login(request,user)
-            return redirect('home')
+        forms = NewUserForm(request.POST)
+        if forms.is_valid():
+            email = forms.cleaned_data['email']
+            username = forms.cleaned_data['username']
+            password1 = forms.cleaned_data['password1']
+            password2 = forms.cleaned_data['password2']
+            if password1 == password2 :
+                if CustomUser.objects.filter(email=email).exists():
+                    context = {
+                        'form':forms,
+                        'message':'Email đã tồn tại'
+                    }
+                    return render(request, 'auth/sigup.html', context)
+                elif CustomUser.objects.filter(username=username).exists():
+                    context = {
+                        'form':forms,
+                        'message':'Username đã tồn tại'
+                    }
+                    return render(request, 'auth/sigup.html', context)
+                else:
+                    newuser = forms.save()
+                    login(request,newuser)
+                    return redirect('home')
+            else:
+                context = {
+                        'form':forms,
+                        'message':'Mật khẩu không trùng khớp'
+                    }
+                return render(request, 'auth/sigup.html', context)
         else:
+            
             context = {
                 'message':"Đăng ký không thành công. Thông tin không hợp lệ."
             }

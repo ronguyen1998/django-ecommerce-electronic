@@ -96,8 +96,6 @@
                             <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
                             <p id="number" class="invalid">A <b>number</b></p>
                             <p id="length" class="invalid">Minimum <b>8 characters</b></p>
-                            <p id="compare" class="invalid">Compare <b>password</b></p>
-
                         </div>
 
                         <button type="submit" class="site-btn">Sigup</button>
@@ -127,13 +125,10 @@
     }
 
     var myPassword = document.getElementById("id_password1");
-    var myPasswordConfirm = document.getElementById("id_password2");
-
     var letter = document.getElementById("letter");
     var capital = document.getElementById("capital");
     var number = document.getElementById("number");
     var length = document.getElementById("length");
-    var compare = document.getElementById("compare");
 
 
     // When the user clicks on the password field, show the message box
@@ -183,14 +178,7 @@
             length.classList.add('invalid')
         }
 
-        // Compare pasword
-        if (myPassword.value = myPasswordConfirm.value) {
-            length.classList.remove('invalid');
-            length.classList.add('valid');
-        } else {
-            length.classList.remove('valid');
-            length.classList.add('invalid')
-        }
+
 
     }
 </script>
