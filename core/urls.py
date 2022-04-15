@@ -11,6 +11,8 @@ from core.views.auth import view_auth
 urlpatterns = [ 
     path('home', view_home.HomeView.as_view(), name='home'),
     path('login/',view_auth.LoginView.as_view(), name='login'),
+    path('sigup/',view_auth.SigupView.as_view(), name='sigup'),
+    
     path('logout/', view_auth.Logout , name='logout')
 ] + (
         static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) +

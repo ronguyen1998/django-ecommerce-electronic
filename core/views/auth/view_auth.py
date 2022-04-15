@@ -1,9 +1,11 @@
+from multiprocessing import context
 import re
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from core.models import CustomUser
+from core.forms import NewUserForm
 # Create your views here.
 
 class LoginView(View):
@@ -14,7 +16,6 @@ class LoginView(View):
     def post(self, request):
         username = request.POST.get('username')
         password = request.POST.get('password')
-        next_url = request.POST.get('next_url','')
         user = authenticate(request, username=username, password=password)
         if (user is not None):
             if (user.is_lock):
@@ -24,10 +25,10 @@ class LoginView(View):
                 }
                 return render(request, 'auth/login.html', context)
             login(request, user)
-            if next_url:
-                return HttpResponseRedirect(next_url)
-            elif request.user.is_superuser:
+            if request.user.is_superuser:
                 return HttpResponseRedirect('/admin')
+            else:
+                return redirect('home')
         else:
             context = {
                 'username':username,
@@ -39,3 +40,24 @@ class LoginView(View):
 def Logout(request):
     logout(request)
     return redirect('home')
+
+
+class SigupView(View):
+    def get(self,request):
+        form = NewUserForm()
+        context = {
+            'form':form,
+        }
+        return render(request, 'auth/sigup.html',context)
+    def post(self, request):
+        form = NewUserForm(request.POST)
+        print(form)
+        if form.is_valid():
+            user = form.save()
+            login(request,user)
+            return redirect('home')
+        else:
+            context = {
+                'message':"Đăng ký không thành công. Thông tin không hợp lệ."
+            }
+            return render(request,'auth/sigup.html', context)
