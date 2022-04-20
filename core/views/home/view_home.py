@@ -9,7 +9,7 @@ from core.models import Product, Category
 class HomeView(View):
     def get(self, request):
         list_product = Product.objects.all()
-        
+        # list_orange = list_product.filter()
 
         context = {
             "list_product":list_product,

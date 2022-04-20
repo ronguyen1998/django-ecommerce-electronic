@@ -12,8 +12,9 @@ urlpatterns = [
     path('home', view_home.HomeView.as_view(), name='home'),
     path('login/',view_auth.LoginView.as_view(), name='login'),
     path('sigup/',view_auth.SigupView.as_view(), name='sigup'),
-    
-    path('logout/', view_auth.Logout , name='logout')
+    path('logout/', view_auth.Logout , name='logout'),
+
+    path('detail/product/<int:id_product>',view_detail.DetailProductView,name='detail_product')
 ] + (
         static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) +
         static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
