@@ -43,6 +43,7 @@ def Logout(request):
 
 
 class SigupView(View):
+    
     def get(self,request):
         form = NewUserForm()
         context = {
@@ -85,3 +86,6 @@ class SigupView(View):
                 'message':"Đăng ký không thành công. Thông tin không hợp lệ."
             }
             return render(request,'auth/sigup.html', context)
+
+
+

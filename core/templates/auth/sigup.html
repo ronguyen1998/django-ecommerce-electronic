@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %} {% block css %}
 <!-- custom css -->
 <style>
     #message {
@@ -38,75 +38,87 @@
         content: "✖";
     }
 </style>
-<!-- Checkout Section Begin -->
-<section class="checkout spad">
+{% endblock css %}
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
     <div class="container">
-        <div class="checkout__form">
-            <h4>Sigup</h4>
-            <form action="{% url 'sigup' %}" method="POST">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-lg-12 col-md-8">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="checkout__input">
-                                    <p>Username<span>*</span></p>
-                                    <input type="text" placeholder="Nhập Username" name="username" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="checkout__input">
-                                    <p>Email<span>*</span></p>
-                                    <input type="email" placeholder="Nhập Email" name="email" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="checkout__input">
-                                    <p>Password<span>*</span></p>
-                                    <input type="password" autocomplete="new-password" placeholder="Nhập password" id="id_password1" name="password1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
-                                </div>
-                            </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="breadcrumb-header">Sigup</h3>
+                <ul class="breadcrumb-tree">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li class="active">Sigup</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
 
-                            <div class="col-lg-6">
-                                <div class="checkout__input">
-                                    <p>Password Confirmation<span>*</span></p>
-                                    <input type="password" autocomplete="new-password" placeholder="Xác nhận password" id="id_password2" name="password2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
-                                </div>
-                            </div>
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
 
-                        </div>
-
-                        <div class="checkout__input__checkbox">
-                            <label for="acc">
-                                Show password
-                                <input type="checkbox" id="acc" onclick="showPassword()">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                        {% if message %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ message }}
-                        </div>
-                        {% endif %}
-                        <div id="message">
-                            <h4>Password must contain the following:</h4>
-                            <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-                            <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-                            <p id="number" class="invalid">A <b>number</b></p>
-                            <p id="length" class="invalid">Minimum <b>8 characters</b></p>
-                        </div>
-
-                        <button type="submit" class="site-btn">Sigup</button>
+            <div class="col-md-12">
+                <div class="billing-details">
+                    <div class="section-title">
+                        <h3 class="title">Billing address</h3>
+                    </div>
+                    <div class="form-group">
+                        <p>Username<span>*</span></p>
+                        <input class="input" type="text" name="first-name" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <p>Email<span>*</span></p>
+                        <input class="input" type="text" name="last-name" placeholder="Last Name">
+                    </div>
+                    <div class="form-group">
+                        <p>Password<span>*</span></p>
+                        <input class="input" type="email" name="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <p>Password Confirmation<span>*</span></p>
+                        <input class="input" type="text" name="address" placeholder="Address">
                     </div>
 
+                    <div class="form-group">
+                        <div class="col-lg-6">
+                            <div class="input-checkbox">
+                                <input type="checkbox" id="create-account">
+                                <label for="create-account">
+                                <span></span>
+                                Show Password ?
+                            </label>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <p>
+                                <a href="{% url 'login' %}">Login</a>
+                            </p>
+
+                        </div>
+                    </div>
                 </div>
-            </form>
+
+
+
+            </div>
+
+
         </div>
+        <!-- /row -->
     </div>
-</section>
-<!-- Checkout Section End -->
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
 
 {% endblock content %} {% block js %}
 <!-- custom js -->

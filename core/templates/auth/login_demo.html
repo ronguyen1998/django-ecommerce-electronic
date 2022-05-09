@@ -39,78 +39,51 @@
     }
 </style>
 {% endblock css %}
-<!-- BREADCRUMB -->
-<div id="breadcrumb" class="section">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-12">
-                <h3 class="breadcrumb-header">Login</h3>
-                <ul class="breadcrumb-tree">
-                    <li><a href="{% url 'home' %}">Home</a></li>
-                    <li class="active">Login</li>
-                </ul>
-            </div>
-        </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
-</div>
-<!-- /BREADCRUMB -->
 
-<!-- SECTION -->
-<div class="section">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <form action="{% url 'login' %}" method="POST">
-            {% csrf_token %}
-            <div class="row">
+<!-- Breadcrumb Section End -->
 
-                <div class="col-md-12">
-                    <div class="billing-details">
-                        <div class="section-title">
-                            <h3 class="title">Login</h3>
-                        </div>
-                        <div class="form-group">
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <h4>Login</h4>
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-12 col-md-8">
+
+                        <div class="checkout__input">
                             <p>Username<span>*</span></p>
-                            <input class="input" type="text" name="username" placeholder="Username">
+                            <input type="text" placeholder="Nhập Username" name="username" required value="{% if old_user %} {{ old_user }} {% endif %}">
                         </div>
-                        <div class="form-group">
+
+                        <div class="checkout__input">
                             <p>Password<span>*</span></p>
-                            <input class="input" type="password" id="password" name="password" placeholder="Password">
+                            <input type="password" placeholder="Nhập password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-lg-6">
-                                <div class="input-checkbox">
-                                    <input type="checkbox" id="create-account" onclick="showPassword()">
-                                    <label for="create-account">
-                                <span></span>
-                                Show Password
-                            </label>
+                        <div class="checkout__input__checkbox">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="acc">
+                                            Show password
+                                            <input type="checkbox" id="acc" onclick="showPassword()">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <p>
+                                        <a href="{% url 'sigup' %}">Tạo tài khoản</a>
+                                    </p>
 
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <p>
-                                    <a href="{% url 'sigup' %}">Tạo tài khoản</a>
-                                </p>
-
-                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <div class="col-lg-12">
-                                {% if message %}
-                                <div class="alert alert-danger" role="alert">
-                                    {{ message }}
-                                </div>
-                                {% endif %}
-                            </div>
-
+                        {% if message %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
                         </div>
+                        {% endif %}
                         <div id="message">
                             <h4>Password must contain the following:</h4>
                             <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
@@ -119,20 +92,16 @@
                             <p id="length" class="invalid">Minimum <b>8 characters</b></p>
                         </div>
 
-                        <button type="submit" class="primary-btn order-submit">LOGIN</button>
+
+                        <button type="submit" class="site-btn">LOGIN</button>
                     </div>
 
-
                 </div>
-
-
-            </div>
-        </form>
-        <!-- /row -->
+            </form>
+        </div>
     </div>
-    <!-- /container -->
-</div>
-<!-- /SECTION -->
+</section>
+<!-- Checkout Section End -->
 
 
 {% endblock content %} {% block js %}

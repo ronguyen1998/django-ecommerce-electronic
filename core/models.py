@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 # from django.core.validators import MaxValueValidator, MinValueValidator
@@ -74,6 +75,10 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = '06. Danh mục'
+    @property
+    def get_list_products(self):
+        return Product.objects.filter(categories__code=self.code)
+
 
     def __str__(self):
         return self.name
