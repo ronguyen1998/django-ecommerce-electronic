@@ -135,6 +135,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True)
     price = models.IntegerField(default=0)
+    
     size = models.ManyToManyField(Size)
     color = models.ManyToManyField(Color)
     amount = models.IntegerField(default=0)

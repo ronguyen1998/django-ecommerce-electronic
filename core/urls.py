@@ -18,10 +18,6 @@ urlpatterns = [
     # detail product
     path('detail/product/<int:id_product>',view_detail.DetailProductView,name='detail_product')
 
-
-    
-
-
 ] + (
         static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) +
         static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
