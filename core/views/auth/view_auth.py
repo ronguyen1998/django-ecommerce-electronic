@@ -86,6 +86,3 @@ class SigupView(View):
                 'message':"Đăng ký không thành công. Thông tin không hợp lệ."
             }
             return render(request,'auth/sigup.html', context)
-
-
-
