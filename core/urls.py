@@ -8,6 +8,8 @@ from core.views.detail import view_detail
 from core.views.home import view_home
 from core.views.auth import view_auth
 
+from core.views import views
+
 urlpatterns = [     
     path('home', view_home.HomeView.as_view(), name='home'),
     # auth

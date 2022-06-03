@@ -30,3 +30,4 @@ class HomeView(View):
 
     def post(self, request):
         pass
+

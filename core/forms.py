@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from core.models import CustomUser
+from core.models import ContactUs, CustomUser
 
 
 class NewUserForm(UserCreationForm):
@@ -16,3 +16,9 @@ class NewUserForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = ContactUs
+        fields = '__all__'
