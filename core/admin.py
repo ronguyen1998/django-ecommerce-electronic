@@ -49,7 +49,7 @@ admin.site.register(Color,ColorAdmin )
 
 
 class DiscountCodeAdmin(admin.ModelAdmin):
-    list_display = ['id','code','list_products','description','created_at','update_at']
+    list_display = ['id','code','list_products','description','created_at','updated_at']
     def list_products(self, obj):
         return ", " .join([p.name for p in obj.product.all()])
 admin.site.register(DiscountCode, DiscountCodeAdmin)
@@ -98,5 +98,6 @@ class CartAdmin(admin.ModelAdmin):
 admin.site.register(Cart, CartAdmin)
 
 
-
-
+class ContactUsAdmin(admin.ModelAdmin):
+    list_display = ['id','name','number_phone', 'mail','message']
+admin.site.register(ContactUs,ContactUsAdmin)

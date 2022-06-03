@@ -1,18 +1,38 @@
-from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 # from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
+class TimeStampedModelMixin(models.Model):
+    """
+    Abstract Mixin model to add timestamp
+    """
+    created_at = models.DateTimeField(u"Date created_at",auto_now_add=True)
+    updated_at = models.DateTimeField(u"Date updated_at",auto_now=True, db_index=True)
+
+    class Meta:
+        abstract = True
 
 
 class CustomUser(AbstractUser):
     is_lock = models.BooleanField(default=False, blank=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=11, blank=True, null=True)
+    dateofbirth = models.CharField(max_length=10, default='',blank=True, null=True)
+    email = models.EmailField(blank=True)
+    is_activate = models.BooleanField(default=True, blank=True)
     
-    created_at = models.DateTimeField(auto_now=True)
-    update_at = models.DateTimeField(auto_now_add=True)
+    def save(self, *args, **kwargs):
+        if not self.is_superuser:
+            self.is_superuser = False
+        super(CustomUser, self).save(*args, **kwargs)
+    
+    def full_name(self):
+        try:
+            full_name = str(self.last_name) + " " + str(self.first_name)
+        except:
+            full_name = ""
+        return full_name.strip()
 
     class Meta:
         verbose_name_plural = '01. Danh sách người dùng'
@@ -30,9 +50,10 @@ class Brand(models.Model):
         return self.name
 
 
-class Gift(models.Model):
+class Gift(TimeStampedModelMixin):
     name = models.CharField(max_length=255,blank=True, null=True )
     product = models.ManyToManyField(to='Product')
+    
     class Meta:
         verbose_name_plural = '03. Quà tặng'
 
@@ -41,7 +62,7 @@ class Gift(models.Model):
         return self.name
 
 
-class Percent(models.Model):
+class Percent(TimeStampedModelMixin):
     number_percent = models.IntegerField()
 
     class Meta:
@@ -51,15 +72,12 @@ class Percent(models.Model):
         return str(self.number_percent)
 
 
-class Event(models.Model):
+class Event(TimeStampedModelMixin):
     name = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField()
     date_start = models.DateField()
     date_stop = models.DateField()
     product = models.ManyToManyField(to='Product')
-
-    created_at = models.DateTimeField(auto_now=True)
-    update_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = '05. Sự kiện'
@@ -68,7 +86,7 @@ class Event(models.Model):
         return self.name
 
 
-class Category(models.Model):
+class Category(TimeStampedModelMixin):
     name = models.CharField(max_length=255, unique=True)
     code = models.CharField(max_length=11, blank=True, null=True)
     description = models.CharField(max_length=1024, blank=True, null=True)
@@ -104,12 +122,11 @@ class Color(models.Model):
         return self.name
 
 
-class DiscountCode(models.Model):
+class DiscountCode(TimeStampedModelMixin):
     code = models.CharField(max_length=11, blank=False, null=False)
     description = models.CharField(max_length=1024, null=True)
     product = models.ManyToManyField(to="Product")
-    created_at = models.DateTimeField(auto_now=True)
-    update_at = models.DateTimeField(auto_now_add=True)
+    
 
     class Meta:
         verbose_name_plural = '09. Mã giảm giá'
@@ -118,7 +135,7 @@ class DiscountCode(models.Model):
         return str(self.code)
 
 
-class Insurance(models.Model):
+class Insurance(TimeStampedModelMixin):
     time_insurance = models.CharField(max_length=10)
     product = models.ManyToManyField(to="Product")
     
@@ -128,7 +145,7 @@ class Insurance(models.Model):
     def __str__(self):
         return str(self.time_insurance)
 
-class Product(models.Model):
+class Product(TimeStampedModelMixin):
     name = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(default='')
     detail = models.TextField(blank=True, null=True)
@@ -143,8 +160,7 @@ class Product(models.Model):
     image_detail = models.FileField(upload_to='image-detail', null=True)
     views = models.IntegerField(default=0)
     
-    created_at = models.DateTimeField(auto_now=True)
-    update_at = models.DateTimeField(auto_now_add=True)
+    
 
     class Meta:
         verbose_name_plural = '11. Sản phẩm'
@@ -180,7 +196,7 @@ class OrderItem(models.Model):
         return '{} - {} - {}'.format(self.order.user, self.product, self.quantity)
 
 
-class Order(models.Model):
+class Order(TimeStampedModelMixin):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ManyToManyField(Product,through='OrderItem')
     address_ship = models.CharField(max_length=1024)
@@ -193,7 +209,6 @@ class Order(models.Model):
                     )
     status = models.CharField(max_length=255, choices=choice_status, default='In Process')
     
-    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = '13. Đơn hàng'
@@ -213,7 +228,19 @@ class Cart(models.Model):
         return str(self.order.user)
 
 
-    
+class ContactUs(TimeStampedModelMixin):
+    name = models.CharField(max_length=255, blank=False, null= False)
+    mail = models.EmailField()
+    number_phone = models.CharField(max_length=11, blank=False, null=False)
+    subject = models.CharField(max_length=255, blank=False, null=False)
+    message = models.CharField(max_length=1024, blank=False, null=False)
+
+    class Meta:
+        verbose_name_plural = '15.Liên hệ'
+
+    def __str__(self):
+        return self.name
+
 
 
     
